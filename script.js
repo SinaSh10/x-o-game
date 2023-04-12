@@ -12,3 +12,65 @@ window.addEventListener('DOMContentLoaded',()=>{
     const playerO_won='PLAYERO_WON'
     const tie='TIE'
 })
+const winnigConditions=[
+    [0,1,2]
+    [3,4,5]
+    [6,7,8]
+    [0,3,6]
+    [1,4,7]
+    [2,5,8]
+    [0,4,8]
+    [2,4,6]
+]
+function handleResultValidation (){
+    let roundWon=false
+    for(let i=0;i<=7;i++){
+        const winCondition=winnigConditions[i]
+        const a=board[winCondition[0]]
+        const b=board[winCondition[1]]
+        const c=board[winCondition[2]]
+        if(a===''||b===''||c===''){
+            continue
+        }
+        if(a===b&&b===c){
+            roundWon=true
+            break
+        }
+
+    }
+    if(roundWon){
+        announce(currentPlayer==='X'?playerX_won:playerO_won)
+        isGameActive=false
+        return
+    }
+    if(!board.includes(""))announce(tie)
+}
+const announce=(type)=>{
+    switch(type){
+        case playerO_won:
+            announcer.innerHTML=' player <span class="display-player playerX">X</span> won'
+            break
+        case playerX_won:
+            announcer.innerHTML=' player <span class="display-player playerX">O</span> won'
+            break
+        case tie:
+            announcer.innerText='Tie'    
+
+
+    }
+    announcer.classList.remove("hide")
+}
+const isValidAction=(tile)=>{
+    return tile.innerText !=="X" && tile.innerText!=="O"
+}
+const updateBoard=(index)=>{
+    board[index]=currentPlayer
+}
+const changePlayer=()=>{
+    playerDisplay.classList.remove(`player${currentPlayer}`)
+    currentPlayer= currentPlayer==="X"? "O":"X"
+    playerDisplay.innerText=currentPlayer
+    playerDisplay.classList.add(`player${currentPlayer}`)
+
+}
+
