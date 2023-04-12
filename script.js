@@ -13,13 +13,13 @@ window.addEventListener('DOMContentLoaded',()=>{
     const tie='TIE'
 })
 const winnigConditions=[
-    [0,1,2]
-    [3,4,5]
-    [6,7,8]
-    [0,3,6]
-    [1,4,7]
-    [2,5,8]
-    [0,4,8]
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
     [2,4,6]
 ]
 function handleResultValidation (){
@@ -29,7 +29,7 @@ function handleResultValidation (){
         const a=board[winCondition[0]]
         const b=board[winCondition[1]]
         const c=board[winCondition[2]]
-        if(a===''||b===''||c===''){
+        if(a===""||b===""||c===""){
             continue
         }
         if(a===b&&b===c){
@@ -39,7 +39,7 @@ function handleResultValidation (){
 
     }
     if(roundWon){
-        announce(currentPlayer==='X'?playerX_won:playerO_won)
+        announce(currentPlayer==="X"?playerX_won:playerO_won)
         isGameActive=false
         return
     }
@@ -73,4 +73,29 @@ const changePlayer=()=>{
     playerDisplay.classList.add(`player${currentPlayer}`)
 
 }
-
+const userAction=(tile,index)=>{
+    if (isValidAction(tile)&&isGameActive){
+        tile.innerText=currentPlayer
+        tile.classList.add(`player${currentPlayer}`)
+        updateBoard(index)
+        handleResultValidation()
+        changePlayer()
+    }
+}
+const resetBoard=()=>{
+    board=['','','','','','','','','']
+    isGameActive=true
+    announcer.classList.add("hide")
+    if (currentPlayer==="O") {
+        changePlayer()
+    }
+    tiles.forEach((tile)=>{
+        tile.innerText=""
+        tile.classList.remove("playerX")
+        tile.classList.remove("playerO")
+    })
+}
+// tiles.forEach((tile,index)=>{
+//     tile.addEventListener("click",()=>userAction(tile,index))
+// })
+// resetButton.addEventListener("click",resetBoard)
